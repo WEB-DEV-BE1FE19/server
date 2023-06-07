@@ -5,7 +5,7 @@ class AdminDeleteController {
 	static async peserta(req, res) {
 		try {
 			await Peserta.destroy({where : {id : req.params.pesertaId}});
-			res.status(200).send({ msg: "Delete Berhasil" });
+			res.status(200).send({ msg: "Delete Peserta Berhasil" });
 		} catch (error) {
 			console.log(error)
 			res.status(500).send({ msg: "Internal Server Error" });
@@ -14,17 +14,18 @@ class AdminDeleteController {
 
 	static async kelas(req, res) {
 		try {
-			const datas = await Kelas.findAll();
-			res.status(200).send(datas);
+			const dataKelas = await Kelas.destroy({where : {id : req.params.kelasId}});
+			await Materi.destroy({where : {kelas_id : dataKelas.id}});
+			res.status(200).send({ msg: "Delete Kelas Berhasil" });
 		} catch (error) {
 			res.status(500).send({ msg: "Internal Server Error" });
 		}
 	}
 
-	static async karyaSiswa(req, res) {
+	static async karya(req, res) {
 		try {
-			const datas = await Karya.findAll();
-			res.status(200).send(datas);
+			await Karya.destroy({where : {id : req.params.karyaId}});
+			res.status(200).send({ msg: "Delete Karya Berhasil" });
 		} catch (error) {
 			res.status(500).send({ msg: "Internal Server Error" });
 		}
@@ -32,12 +33,13 @@ class AdminDeleteController {
 
 	static async berita(req, res) {
 		try {
-			const datas = await Berita.findAll();
-			res.status(200).send(datas);
+			await Berita.destroy({where : {id : req.params.beritaId}});
+			res.status(200).send({ msg: "Delete Berita Berhasil" });
 		} catch (error) {
 			res.status(500).send({ msg: "Internal Server Error" });
 		}
 	}
+
 }
 
 module.exports = AdminDeleteController;
