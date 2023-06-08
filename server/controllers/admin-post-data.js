@@ -1,6 +1,4 @@
 const { Kelas, Materi, Peserta, Berita, Karya } = require("../models");
-const { checkPassword } = require("../helpers/hashing");
-
 class AdminPostController {
 	static async peserta(req, res) {
 		try {

@@ -1,12 +1,10 @@
 const router = require('express').Router()
+const homepage = require('./homepage')
 const adminRouter = require('./admin')
 const kelasRouter = require('./kelas')
 
 
-router.get('/', (req,res) => {
-    res.send('ini homepage')
-})
-
+router.use(homepage)
 router.use(adminRouter)
 router.use(kelasRouter)
 
