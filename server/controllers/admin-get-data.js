@@ -1,5 +1,5 @@
 const { Admin, Kelas, Materi, Peserta, Berita, Karya } = require("../models");
-const { checkPassword } = require("../helpers/hashing");
+const { checkPassword } = require("../helpers/cekUser");
 
 class AdminGetController {
 	static async adminLogin(req, res) {
