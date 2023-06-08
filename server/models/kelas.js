@@ -10,7 +10,8 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // define association here
+      Kelas.belongsToMany(models.Peserta, {through: 'Kelas_Peserta', foreignKey: 'kelas_id'})
+      Kelas.hasMany(models.Materi, {foreignKey: 'kelas_id'})
     }
   }
   Kelas.init({

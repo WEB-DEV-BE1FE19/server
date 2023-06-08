@@ -14,8 +14,8 @@ const mail = async (email) => {
         port : 465,
         secure : true,
         auth : {
-            user : process.env.EMAIL_REMEDIAL,
-            pass : process.env.PASSWORD_REMEDIAL
+            user : "remedialproject1@gmail.com",
+            pass : "vxddvyviupkitcff"
         } 
     })
 
