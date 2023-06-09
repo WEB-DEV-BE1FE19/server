@@ -41,24 +41,24 @@ class UserController {
         }
 	}
 
-	static async userAddKelas(req,res,next) {
+	static async userAddKelas(req,res) {
 		try {
 			const dataToken = await verifyToken(req.headers.token, process.env.SECRET_KEY)
 			const peserta = await Peserta.findOne({where:{id: dataToken.id, email: dataToken.email}})
 			if (peserta) {
 				const pesertaId = peserta.id
 				const kelasId = req.params.kelasId
-				const kelas_peserta = await Kelas_Peserta.create({id_peserta:pesertaId, id_kelas:kelasId})	
-				if (kelas_peserta) {
-					const kelas = await Kelas.findOne({where:{id_peserta: kelas_peserta.id_peserta, id_kelas: kelas_peserta.id_kelas}})
-					res.status(200).json({
-						msg: 'Berhasil tambah kelas',
-						data: kelas
-					})
-					next()
-				}
-			} else res.status(401)
+				const kelas_peserta = await Kelas_Peserta.create({
+					id_peserta: pesertaId,
+					id_kelas: kelasId
+				})	
+				res.status(200).json({
+					msg: 'Berhasil tambah kelas',
+					data: kelas_peserta
+				})
+			} else res.status(401).send({msg: 'unauthorized'})
 		} catch (error) {
+			console.log(error)
 			res.status(500).send({msg: 'Internal Server Error'})
 		}
 	}
