@@ -1,11 +1,7 @@
 const router = require("express").Router();
-const { KelasController } = require("../controllers/kelas");
-const { UserController } = require("../controllers/user")
-const auth = require('../middlewares/auth')
+const {BeritaController} = require("../controllers/berita")
 
-router.get("/kelas", KelasController.allClass);
-
-router.use(auth)
-router.post('/kelas/:kelasId', UserController.userAddKelas)
+router.get("/berita", BeritaController.allNews)
+router.get("/berita/:beritaId", BeritaController.newsById)
 
 module.exports = router;
