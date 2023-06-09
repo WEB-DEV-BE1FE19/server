@@ -59,6 +59,17 @@ class AdminGetController {
 			res.status(500).send({ msg: "Internal Server Error" });
 		}
 	}
+
+	static async materi(req, res) {
+		try {
+			const dataKelas = req.params.kelasId;
+			const kelas = await Kelas.findOne({where:{id:dataKelas}})
+			const datas = await Materi.findAll({where:{kelas_id:kelas.id}});
+			res.status(200).send(datas);
+		} catch (error) {
+			res.status(500).send({ msg: "Internal Server Error" });
+		}
+	}
 }
 
 module.exports = AdminGetController;

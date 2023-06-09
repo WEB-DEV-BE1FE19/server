@@ -10,7 +10,7 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      Materi.belongsTo(models.Kelas, {throough: 'kelas_id'})
+      Materi.belongsTo(models.Kelas, {foreignKey: 'kelas_id'})
     }
   }
   Materi.init({

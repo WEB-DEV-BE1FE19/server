@@ -38,6 +38,15 @@ class AdminDeleteController {
 		}
 	}
 
+	static async materi(req, res) {
+		try {
+			await Materi.destroy({where : {id : req.params.materiId}});
+			res.status(200).send({ msg: "Delete Materi Berhasil" });
+		} catch (error) {
+			res.status(500).send({ msg: "Internal Server Error" });
+		}
+	}
+
 	static async deleteallpeserta(req, res) {
 		try {
 			await Peserta.destroy({
