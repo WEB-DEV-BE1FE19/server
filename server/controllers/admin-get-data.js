@@ -42,7 +42,7 @@ class AdminGetController {
 		}
 	}
 
-	static async karyaSiswa(req, res) {
+	static async karya(req, res) {
 		try {
 			const datas = await Karya.findAll();
 			res.status(200).send(datas);
