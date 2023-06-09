@@ -1,4 +1,4 @@
-const { Peserta, Kelas, Berita, Karya } = require("../models");
+const { Kelas, Berita, Karya } = require("../models");
 
 class GenerateHomePage {
 	static async genertaeHomePage(req, res) {

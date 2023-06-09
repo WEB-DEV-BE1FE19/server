@@ -2,7 +2,6 @@ require("dotenv").config();
 const { Peserta, Kelas, Kelas_Peserta, Karya, Karya_Peserta } = require("../models");
 const { checkPassword } = require("../helpers/cekUser");
 const { generateToken, verifyToken } = require("../middlewares/jwt");
-const { kelas, peserta } = require("./admin-get-data");
 class UserController {
 	static async userLogin(req, res) {
 		try {
