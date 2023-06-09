@@ -38,6 +38,18 @@ class AdminDeleteController {
 		}
 	}
 
+	static async deleteallpeserta(req, res) {
+		try {
+			await Peserta.destroy({
+				where: {}
+			  });
+			res.status(200).send({ msg: "Delete Peserta Berhasil" });
+		} catch (error) {
+			console.log(error)
+			res.status(500).send({ msg: "Internal Server Error" });
+		}
+	}
+
 }
 
 module.exports = AdminDeleteController;

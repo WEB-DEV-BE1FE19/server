@@ -7,7 +7,7 @@ router.post("/login-admin", adminGet.adminLogin);
 
 router.get("/admin-dashboard/peserta", adminGet.peserta);
 router.get("/admin-dashboard/kelas", adminGet.kelas);
-router.get("/admin-dashboard/karya-siswa", adminGet.karyaSiswa);
+router.get("/admin-dashboard/karya", adminGet.karya);
 router.get("/admin-dashboard/berita", adminGet.berita);
 
 router.post("/admin-dashboard/add-peserta", adminPost.peserta)
@@ -19,5 +19,6 @@ router.delete("/admin-dashboard/peserta/:pesertaId", adminDelete.peserta)
 router.delete("/admin-dashboard/kelas/:kelasId", adminDelete.kelas)
 router.delete("/admin-dashboard/karya/:karyaId", adminDelete.karya)
 router.delete("/admin-dashboard/berita/:beritaId", adminDelete.berita)
+router.delete("/admin-dashboard/deleteall", adminDelete.deleteallpeserta)
 
 module.exports = router;
