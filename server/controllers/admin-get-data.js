@@ -6,12 +6,14 @@ class AdminGetController {
 		try {
 			const data = req.body;
 			const admin = await Admin.findOne({ where: { username: data.username } });
-			const checkPw = await checkPassword(data.password, admin.password);
-			if (checkPw) {
-				res.status(200).send("halo admin");
+			if (admin) {
+				const checkPw = await checkPassword(data.password, admin.password);
+				if (checkPw) {
+					res.status(200).send("halo admin");
+				}
 			} else {
 				res.status(401).json({
-					message: "unauthorized (kamu bukan admin)",
+					message: "Username / Password Salah",
 				});
 			}
 		} catch (error) {
