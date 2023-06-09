@@ -3,10 +3,16 @@ const nodemailer = require('nodemailer')
 
 const mail = async (email) => {
     let body = {
-        from : '"Tim Remedial Gudskull" <remedialproject1@gmail.com>',
+        from : '"Tim Serrum Gudskul" <remedialproject1@gmail.com>',
         to : email,
-        subject: 'Selamat Bergabung Peserta Remedial Gudskull.',
-        html : '<h3>Raih Pengalaman Belajar Kamu Dengan Mengikuti Berbagai Kelas Yang Tersedia.</h3>'
+        subject: 'Selamat Bergabung Peserta Remedial Serrum Gudskul.',
+        html : `
+                <center><img src="https://i.postimg.cc/sf4xFrzw/logo-serrum.png">
+                <br><h3><b>Ayo Raih Pengalaman Belajar Kamu Dengan Mengikuti Berbagai Kelas Yang Tersedia 🚀</b></h3>
+                <br>Hai 🙌, Peserta <strong>Remedial Serrum Gudskull</strong>.
+                Jika ada pertanyaan silahkan balas email ini atau hubungi Kakak-Kakak Admin kita ya 😁
+                </center>
+                `
     }
 
     let transporter = nodemailer.createTransport({
