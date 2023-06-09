@@ -13,7 +13,7 @@ class KaryaController {
     static async artById(req, res) {
         try {
             const artId = req.params.karyaId;
-            const datas = await karya.findOne({where:{id:artId}})   
+            const datas = await Karya.findOne({where:{id:artId}})   
             res.status(200).send(datas)
         } catch (error) {
             throw new Error(error)
