@@ -1,6 +1,6 @@
 "use strict";
 require("dotenv").config();
-const hashing = require("../helper/hashing.js");
+const { hashing } = require("../helpers/cekUser");
 const username = process.env.USERNAME_ADMIN;
 const password = process.env.PASSWORD_ADMIN;
 
