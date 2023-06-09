@@ -82,6 +82,25 @@ class AdminPostController {
 			res.status(500).send({ msg: "Internal Server Error" });
 		}
 	}
+
+	static async materi(req, res) {
+		try {
+			const dataKelas = req.params.kelasId;
+			const data = req.body;
+			const kelas = await Kelas.findOne({where:{id:dataKelas}})
+			
+			const newMateri = await Materi.create({
+				judul_materi: data.judul_materi,
+				deskripsi_materi: data.deskripsi_materi,
+				kelas_id: kelas.id,
+			});
+			res.status(200).send(newMateri);
+			
+		} catch (error) {
+			console.log(error)
+			res.status(500).send({ msg: "Internal Server Error" });
+		}
+	}
 }
 
 module.exports = AdminPostController;
