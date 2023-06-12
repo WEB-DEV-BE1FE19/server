@@ -6,12 +6,12 @@ const kelasRouter = require('./kelas')
 const beritaRouter = require('./berita')
 const karyaRouter = require('./karya')
 
-router.use(adminRouter)
-router.use(userRouter)
 router.use(homepage)
+router.use(userRouter)
 router.use(beritaRouter) 
 router.use(karyaRouter) 
 
+router.use(adminRouter)
 router.use(kelasRouter)
 
 module.exports=router
