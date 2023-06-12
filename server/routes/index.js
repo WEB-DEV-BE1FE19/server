@@ -7,11 +7,11 @@ const beritaRouter = require('./berita')
 const karyaRouter = require('./karya')
 
 router.use(homepage)
-router.use(userRouter)
-router.use(beritaRouter) 
+router.use(kelasRouter)
 router.use(karyaRouter) 
+router.use(beritaRouter) 
 
 router.use(adminRouter)
-router.use(kelasRouter)
+router.use(userRouter)
 
 module.exports=router
