@@ -62,6 +62,31 @@ class UserController {
 			res.status(500).send({msg: 'Internal Server Error'})
 		}
 	}
+
+	static async userAddKarya(req, res) {
+		try {
+			const dataToken = await verifyToken(req.headers.token, process.env.SECRET_KEY)
+			const peserta = await Peserta.findOne({where:{id: dataToken.id, email: dataToken.email}})
+			if (peserta) {
+				const pesertaId = peserta.id
+				const karya = await Karya.findOne({where:{judul_karya:data.judul_karya}})
+				if (karya) {
+					res.status(401).send({msg: "Karya Sudah Ada!"})
+				} else {
+					const data = req.body;
+					const newKarya = await Karya.create({
+						judul_karya: data.judul_karya,
+						deskripsi_karya: data.deskripsi_karya,
+						gambar_karya: data.gambar_karya,
+						peserta_id: pesertaId,
+					});
+					res.status(200).send(newKarya);
+				}
+			} else res.status(401).send({msg: "Harap Login Terlebih Dahulu!"})
+		} catch (error) {
+			res.status(500).send({ msg: "Internal Server Error" });
+		}
+	}
 }
 
 module.exports={UserController}

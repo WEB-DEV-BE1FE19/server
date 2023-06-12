@@ -11,7 +11,7 @@ const cekToken = async (req,res,next) => {
                 msg: "Invalid Token"    })
         } else next()
     } catch (error) {
-        res.status(500).send({msg: 'Internal Server Error'})
+        res.status(401).send({msg: 'Harap Login Terlebih Dahulu!'})
     }
 }
 
@@ -28,8 +28,7 @@ const cekAdmin = async (req,res,next) => {
             } else next()
         }
     } catch (error) {
-        console.log(error)
-        res.status(500).send({msg: 'Internal Server Error'})
+        res.status(401).send({msg: "Kamu Tidak Memiliki Akses!"})
     }
 }
 

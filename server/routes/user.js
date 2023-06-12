@@ -4,6 +4,8 @@ const { cekToken } = require('../middlewares/auth')
 
 router.post('/login', UserController.userLogin)
 router.post('/register', UserController.userRegister)
+
 router.post('/kelas/:kelasId', cekToken, UserController.userAddKelas)
+router.post('/karya', cekToken, UserController.userAddKarya)
 
 module.exports=router
