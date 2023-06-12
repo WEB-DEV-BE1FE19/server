@@ -1,7 +1,9 @@
-const { Kelas, Materi, Peserta, Berita, Karya } = require("../models");
+const { Kelas, Materi, Peserta, Berita, Karya, Kelas_Peserta, Karya_Peserta } = require("../models");
 class AdminDeleteController {
 	static async peserta(req, res) {
 		try {
+			await Kelas_Peserta.destroy({where : {id_peserta : req.params.pesertaId}});
+			await Karya_Peserta.destroy({where : {peserta_id : req.params.pesertaId}});
 			await Peserta.destroy({where : {id : req.params.pesertaId}});
 			res.status(200).send({ msg: "Delete Peserta Berhasil" });
 		} catch (error) {
@@ -12,7 +14,8 @@ class AdminDeleteController {
 
 	static async kelas(req, res) {
 		try {
-			const dataKelas = await Kelas.destroy({where : {id : req.params.kelasId}});
+			await Kelas_Peserta.destroy({where : {id_kelas : req.params.kelasId}});
+			const dataKelas = await Kelas.destroy({where : {id : req.params.kelasId}, cascade: true, include: [Materi]});
 			await Materi.destroy({where : {kelas_id : dataKelas.id}});
 			res.status(200).send({ msg: "Delete Kelas Berhasil" });
 		} catch (error) {
@@ -22,6 +25,7 @@ class AdminDeleteController {
 
 	static async karya(req, res) {
 		try {
+			await Karya_Peserta.destroy({where : {karya_id : req.params.karyaId}});
 			await Karya.destroy({where : {id : req.params.karyaId}});
 			res.status(200).send({ msg: "Delete Karya Berhasil" });
 		} catch (error) {
@@ -40,7 +44,7 @@ class AdminDeleteController {
 
 	static async materi(req, res) {
 		try {
-			await Materi.destroy({where : {id : req.params.materiId}});
+			await Materi.destroy({where : {id : req.params.materiId}, cascade: true});
 			res.status(200).send({ msg: "Delete Materi Berhasil" });
 		} catch (error) {
 			res.status(500).send({ msg: "Internal Server Error" });
@@ -50,7 +54,8 @@ class AdminDeleteController {
 	static async deleteallpeserta(req, res) {
 		try {
 			await Peserta.destroy({
-				where: {}
+				where: {},
+				cascade: true
 			  });
 			res.status(200).send({ msg: "Delete Peserta Berhasil" });
 		} catch (error) {
