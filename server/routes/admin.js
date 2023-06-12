@@ -7,6 +7,7 @@ const { cekAdmin } = require("../middlewares/auth")
 router.post("/login-admin", adminGet.adminLogin);
 
 router.use(cekAdmin)
+
 router.get("/admin-dashboard/peserta", adminGet.peserta);
 router.get("/admin-dashboard/kelas", adminGet.kelas);
 router.get("/admin-dashboard/karya", adminGet.karya);
