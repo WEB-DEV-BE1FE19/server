@@ -15,10 +15,10 @@ class AdminDeleteController {
 	static async kelas(req, res) {
 		try {
 			await Kelas_Peserta.destroy({where : {id_kelas : req.params.kelasId}});
-			const dataKelas = await Kelas.destroy({where : {id : req.params.kelasId}, cascade: true, include: [Materi]});
-			await Materi.destroy({where : {kelas_id : dataKelas.id}});
+			await Kelas.destroy({where : {id : req.params.kelasId}, cascade: true, include: [Materi]});
 			res.status(200).send({ msg: "Delete Kelas Berhasil" });
 		} catch (error) {
+			console.log(error)
 			res.status(500).send({ msg: "Internal Server Error" });
 		}
 	}
