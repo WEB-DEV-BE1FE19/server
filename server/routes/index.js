@@ -1,17 +1,14 @@
 const router = require('express').Router()
-const homepage = require('./homepage')
 const adminRouter = require('./admin')
 const userRouter = require('./user')
-const kelasRouter = require('./kelas')
-const beritaRouter = require('./berita')
-const karyaRouter = require('./karya')
+const authenticationRouter = require('./authentications')
+const beforeLoginRouter = require('./beforeLogin')
+const afterLoginRouter = require('./afterLogin')
 
-router.use(adminRouter)
+router.use(beforeLoginRouter)
+router.use(afterLoginRouter)
+router.use(authenticationRouter)
 router.use(userRouter)
-router.use(homepage)
-router.use(beritaRouter) 
-router.use(karyaRouter) 
-
-router.use(kelasRouter)
+router.use(adminRouter)
 
 module.exports=router

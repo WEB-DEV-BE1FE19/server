@@ -79,6 +79,7 @@ class AdminPostController {
 				res.status(200).send(newBerita);
 			}
 		} catch (error) {
+			console.log(error)
 			res.status(500).send({ msg: "Internal Server Error" });
 		}
 	}

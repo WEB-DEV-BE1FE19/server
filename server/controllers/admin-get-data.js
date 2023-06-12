@@ -1,5 +1,6 @@
 const { Admin, Kelas, Materi, Peserta, Berita, Karya } = require("../models");
 const { checkPassword } = require("../helpers/cekUser");
+const { generateToken } = require("../middlewares/jwt")
 
 class AdminGetController {
 	static async adminLogin(req, res) {
@@ -9,8 +10,14 @@ class AdminGetController {
 			if (admin) {
 				const checkPw = await checkPassword(data.password, admin.password);
 				if (checkPw) {
-					res.status(200).send("halo admin");
-				}
+					const getToken = await generateToken(
+                        {
+                            id: admin.id, 
+                            username: admin.username
+                        },process.env.SECRET_KEY);
+                    if (getToken) {
+                        res.status(200).json({token: getToken});
+                    } 				}
 			} else {
 				res.status(401).json({
 					message: "Username / Password Salah",
@@ -20,7 +27,7 @@ class AdminGetController {
 			res.status(500).json({
 				message: "internal server error",
 			});
-			console.error(error);
+			console.log(error)
 		}
 	}
 

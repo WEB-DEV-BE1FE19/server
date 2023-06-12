@@ -2,8 +2,11 @@ const router = require("express").Router();
 const adminGet = require("../controllers/admin-get-data");
 const adminPost = require("../controllers/admin-post-data");
 const adminDelete = require("../controllers/admin-delete-data");
+const { cekAdmin } = require("../middlewares/auth")
 
 router.post("/login-admin", adminGet.adminLogin);
+
+router.use(cekAdmin)
 
 router.get("/admin-dashboard/peserta", adminGet.peserta);
 router.get("/admin-dashboard/kelas", adminGet.kelas);
