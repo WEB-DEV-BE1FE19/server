@@ -7,7 +7,7 @@ class AfterLogin {
             const dataToken = await verifyToken(req.headers.token, process.env.SECRET_KEY)
 			const dataKelasPeserta = await Kelas_Peserta.findAll({where: {id_peserta: dataToken.id}})
             const kelasId = dataKelasPeserta.map(data => data.id_kelas)
-            const kelas = await Kelas.findAll({where: {id: [kelasId]}})
+            const kelas = await Kelas.findAll({where: {id: kelasId}})
             
             let infoPeserta = {
                 kelas_peserta: kelas
