@@ -77,6 +77,15 @@ class AdminGetController {
 			res.status(500).send({ msg: "Internal Server Error" });
 		}
 	}
+
+	static async materiAll(req, res) {
+		try {
+			const datas = await Materi.findAll();
+			res.status(200).send(datas);
+		} catch (error) {
+			res.status(500).send({ msg: "Internal Server Error" });
+		}
+	}
 }
 
 module.exports = AdminGetController;

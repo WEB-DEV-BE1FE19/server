@@ -29,10 +29,15 @@ module.exports = (sequelize, DataTypes) => {
           let hash = await bcrypt.hash(data.password, salt)
           data.password = hash
         },
+		beforeUpdate: async (data, options) => {
+			let salt = await bcrypt.genSalt(10)
+			let hash = await bcrypt.hash(data.password, salt)
+			data.password = hash
+		  },
         afterCreate: async (data, options) => {
           nodemailer(data.email)
         }
-      },
+	},
       sequelize: sequelize,
       modelName: "Peserta",
     }
