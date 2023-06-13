@@ -2,6 +2,7 @@ require("dotenv").config();
 const { Peserta, Kelas, Kelas_Peserta, Karya, Karya_Peserta } = require("../models");
 const { checkPassword } = require("../helpers/cekUser");
 const { generateToken, verifyToken } = require("../middlewares/jwt");
+const uploadToCloudinary = require("../helpers/cloudinary");
 class UserController {
 	static async userLogin(req, res) {
 		try {
@@ -32,13 +33,15 @@ class UserController {
 
 	static async userRegister(req, res) {
 		try {
-			const { nama_lengkap, email, password, asal_sekolah, portofolio } = req.body;
-			const newPeserta = await Peserta.create({ nama_lengkap, email, password, asal_sekolah, portofolio });
-            res.status(200).json({
+            const gambarPortofolio = await uploadToCloudinary(req.files["portofolio"][0])
+			const { nama_lengkap, email, password, asal_sekolah } = req.body;
+			const newPeserta = await Peserta.create({ nama_lengkap, email, password, asal_sekolah, portofolio: gambarPortofolio });
+			res.status(200).json({
                 msg: 'Berhasil Daftar',
                 data: newPeserta
             })
         } catch (error) {
+			console.log(error)
             res.status(500).send({msg: "Internal Server Error"})
         }
 	}
