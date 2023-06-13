@@ -14,7 +14,7 @@ class AdminUpdateController {
 					password,
 					asal_sekolah,
 					portofolio: porto,
-				}, {where:{id:dataPeserta}});
+				}, {where:{id:dataPeserta},individualHooks: true});
 				res.status(200).send({msg: "Update Peserta Berhasil"})
 			} else {
 				res.status(401).send({msg: "Peserta Tidak Ada"})
