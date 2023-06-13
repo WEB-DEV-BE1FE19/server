@@ -19,7 +19,9 @@ class UserController {
                     if (getToken) {
                         res.status(200).json({token: getToken});
                     } 
-                }
+                } else {
+					res.status(401).send({ msg: "Email Atau Password Salah!" });
+				}
 			} else {
 				res.status(401).send({ msg: "Email Atau Password Salah!" });
 			}
@@ -48,17 +50,21 @@ class UserController {
 			if (peserta) {
 				const pesertaId = peserta.id
 				const kelasId = req.params.kelasId
-				const kelas_peserta = await Kelas_Peserta.create({
-					id_peserta: pesertaId,
-					id_kelas: kelasId
-				})	
-				res.status(200).json({
-					msg: 'Berhasil tambah kelas',
-					data: kelas_peserta
-				})
+				const cek_kelas_peserta = await Kelas_Peserta.findOne({where: {id_peserta: pesertaId, id_kelas: kelasId}})
+				if (cek_kelas_peserta) {
+					res.status(400).send({msg: 'Kamu Sudah Bergabung Kelas Ini'})
+				} else {
+					const kelas_peserta = await Kelas_Peserta.create({
+						id_peserta: pesertaId,
+						id_kelas: kelasId
+					})	
+					res.status(200).json({
+						msg: 'Berhasil tambah kelas',
+						data: kelas_peserta
+					})
+				}
 			} else res.status(401).send({msg: 'unauthorized'})
 		} catch (error) {
-			console.log(error)
 			res.status(500).send({msg: 'Internal Server Error'})
 		}
 	}

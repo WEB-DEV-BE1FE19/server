@@ -4,7 +4,8 @@ class AdminDeleteController {
 		try {
 			await Kelas_Peserta.destroy({where : {id_peserta : req.params.pesertaId}});
 			await Karya_Peserta.destroy({where : {peserta_id : req.params.pesertaId}});
-			await Peserta.destroy({where : {id : req.params.pesertaId}});
+			await Karya.destroy({where : {peserta_id : req.params.pesertaId}, cascade: true});
+			await Peserta.destroy({where : {id : req.params.pesertaId}, cascade : true});
 			res.status(200).send({ msg: "Delete Peserta Berhasil" });
 		} catch (error) {
 			console.log(error)
@@ -26,7 +27,7 @@ class AdminDeleteController {
 	static async karya(req, res) {
 		try {
 			await Karya_Peserta.destroy({where : {karya_id : req.params.karyaId}});
-			await Karya.destroy({where : {id : req.params.karyaId}});
+			await Karya.destroy({where : {id : req.params.karyaId}, cascade: true});
 			res.status(200).send({ msg: "Delete Karya Berhasil" });
 		} catch (error) {
 			res.status(500).send({ msg: "Internal Server Error" });
