@@ -40,8 +40,9 @@ const cekAdmin = async (req,res,next) => {
 				next(error);    
             } else next()
         }
-    } catch {
-        const error = new Error("Silahkan Login Sebagai Admin");
+    } catch (err) {
+        console.log(err)
+        const error = new Error("Harap Periksa Metode Akses Kembali");
 		error.status = 401;
 		next(error);
     }

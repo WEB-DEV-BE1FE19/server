@@ -20,11 +20,17 @@ class KaryaController {
         try {
             const artId = req.params.karyaId;
             const datas = await Karya.findOne({where:{id:artId}})
-            res.status(200).send(datas)
+            if (datas) {
+                res.status(200).send(datas)
+            } else {
+                const error = new Error("Karya Tidak Ditemukan");
+                error.status = 404;
+                next(error);
+            }
         } catch {
-			const error = new Error("Karya Tidak Ditemukan");
-			error.status = 404;
-			next(error);
+            const error = new Error("Karya Tidak Ditemukan");
+            error.status = 404;
+            next(error);
 		}
     }
 }
