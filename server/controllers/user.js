@@ -20,7 +20,7 @@ class UserController {
 						process.env.SECRET_KEY
 					);
 					if (getToken) {
-						res.status(202).json({ token: getToken });
+						res.status(202).json({ nama_lengkap: isPeserta.nama_lengkap, enail: isPeserta.email, token: getToken });
 					} else {
 						const error = new Error("Token tidak valid!");
 						error.status = 401;
