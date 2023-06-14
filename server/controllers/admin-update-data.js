@@ -4,17 +4,14 @@ class AdminUpdateController {
 	static async peserta(req, res, next) {
 		try {
 			const dataPeserta = req.params.pesertaId;
-			const { nama_lengkap, email, password, asal_sekolah } = req.body;
+			const { nama_lengkap, email, password } = req.body;
 			const peserta = await Peserta.findOne({ where: { id: dataPeserta } });
 			if (peserta) {
-				const porto = await uploadToCloudinary(req.files["portofolio"][0]);
 				await Peserta.update(
 					{
 						nama_lengkap,
 						email,
-						password,
-						asal_sekolah,
-						portofolio: porto,
+						password
 					},
 					{ where: { id: dataPeserta }, individualHooks: true }
 				);

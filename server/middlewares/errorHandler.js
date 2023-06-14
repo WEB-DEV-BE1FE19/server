@@ -24,7 +24,7 @@ const errHandler = (err, req, res, next) => {
 	}
 
 	if (err.status === 406) {
-		return res.status(406).json({ message: err });
+		return res.status(406).json({ message: err.message });
 	}
 
 	else res.status(500).json({ message: "Kesalahan Server!" });
