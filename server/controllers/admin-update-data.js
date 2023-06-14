@@ -11,15 +11,15 @@ class AdminUpdateController {
 					{
 						nama_lengkap,
 						email,
-						password
+						password,
 					},
 					{ where: { id: dataPeserta }, individualHooks: true }
 				);
-				res.status(204).send({ msg: "Update Peserta Berhasil" });
+				res.status(200).send({ msg: "Update Peserta Berhasil" });
 			} else {
-				const error = new Error('Data Tidak Ditemukan'); 
-                error.status(404);
-                throw error
+				const error = new Error("Data Tidak Ditemukan");
+				error.status(404);
+				throw error;
 			}
 		} catch (err) {
 			next(err);
@@ -43,11 +43,11 @@ class AdminUpdateController {
 					},
 					{ where: { id: dataKelas } }
 				);
-				res.status(204).send({ msg: "Update Kelas Berhasil" });
+				res.status(200).send({ msg: "Update Kelas Berhasil" });
 			} else {
-				const error = new Error('Data Tidak Ditemukan'); 
-                error.status(404);
-                throw error
+				const error = new Error("Data Tidak Ditemukan");
+				error.status(404);
+				throw error;
 			}
 		} catch (err) {
 			next(err);
@@ -70,11 +70,11 @@ class AdminUpdateController {
 					},
 					{ where: { id: dataKarya }, cascade: true }
 				);
-				res.status(204).send({ msg: "Update Karya Berhasil" });
+				res.status(200).send({ msg: "Update Karya Berhasil" });
 			} else {
-				const error = new Error('Data Tidak Ditemukan'); 
-                error.status(404);
-                throw error
+				const error = new Error("Data Tidak Ditemukan");
+				error.status(404);
+				throw error;
 			}
 		} catch (err) {
 			next(err);
@@ -96,11 +96,11 @@ class AdminUpdateController {
 					},
 					{ where: { id: dataBerita }, cascade: true }
 				);
-				res.status(204).send({ msg: "Update Berita Berhasil" });
+				res.status(200).send({ msg: "Update Berita Berhasil" });
 			} else {
-				const error = new Error('Data Tidak Ditemukan'); 
-                error.status(404);
-                throw error
+				const error = new Error("Data Tidak Ditemukan");
+				error.status(404);
+				throw error;
 			}
 		} catch (err) {
 			next(err);
@@ -113,20 +113,20 @@ class AdminUpdateController {
 			const dataMateri = req.params.materiId;
 			const kelas = await Kelas.findOne({ where: { id: dataKelas } });
 			const { judul_materi, deskripsi_materi } = req.body;
-			const materi = await Materi.findOne({ where: { id: dataMateri } });
+			const materi = await Materi.findOne({ where: { id: dataMateri, kelas_id: kelas.id } });
 			if (materi) {
 				await Materi.update(
 					{
 						judul_materi,
-						deskripsi_materi
+						deskripsi_materi,
 					},
 					{ where: { id: dataMateri }, cascade: true }
 				);
-				res.status(204).send({ msg: "Update Materi Berhasil" });
+				res.status(200).send({ msg: "Update Materi Berhasil" });
 			} else {
-				const error = new Error('Data Tidak Ditemukan'); 
-                error.status(404);
-                throw error
+				const error = new Error("Data Tidak Ditemukan");
+				error.status(404);
+				throw error;
 			}
 		} catch (err) {
 			next(err);

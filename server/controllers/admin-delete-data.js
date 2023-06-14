@@ -6,7 +6,7 @@ class AdminDeleteController {
 			await Karya_Peserta.destroy({ where: { peserta_id: req.params.pesertaId } });
 			await Karya.destroy({ where: { peserta_id: req.params.pesertaId }, cascade: true });
 			await Peserta.destroy({ where: { id: req.params.pesertaId }, cascade: true });
-			res.status(204).send({ msg: "Delete Peserta Berhasil" });
+			res.status(200).send({ msg: "Delete Peserta Berhasil" });
 		} catch (err) {
 			next(err);
 		}
@@ -16,7 +16,7 @@ class AdminDeleteController {
 		try {
 			await Kelas_Peserta.destroy({ where: { id_kelas: req.params.kelasId } });
 			await Kelas.destroy({ where: { id: req.params.kelasId }, cascade: true, include: [Materi] });
-			res.status(204).send({ msg: "Delete Kelas Berhasil" });
+			res.status(200).send({ msg: "Delete Kelas Berhasil" });
 		} catch (err) {
 			next(err);
 		}
@@ -26,7 +26,7 @@ class AdminDeleteController {
 		try {
 			await Karya_Peserta.destroy({ where: { karya_id: req.params.karyaId } });
 			await Karya.destroy({ where: { id: req.params.karyaId }, cascade: true });
-			res.status(204).send({ msg: "Delete Karya Berhasil" });
+			res.status(200).send({ msg: "Delete Karya Berhasil" });
 		} catch (err) {
 			next(err);
 		}
@@ -35,7 +35,7 @@ class AdminDeleteController {
 	static async berita(req, res, next) {
 		try {
 			await Berita.destroy({ where: { id: req.params.beritaId } });
-			res.status(204).send({ msg: "Delete Berita Berhasil" });
+			res.status(200).send({ msg: "Delete Berita Berhasil" });
 		} catch (err) {
 			next(err);
 		}
@@ -44,7 +44,7 @@ class AdminDeleteController {
 	static async materi(req, res, next) {
 		try {
 			await Materi.destroy({ where: { id: req.params.materiId }, cascade: true });
-			res.status(204).send({ msg: "Delete Materi Berhasil" });
+			res.status(200).send({ msg: "Delete Materi Berhasil" });
 		} catch (err) {
 			next(err);
 		}
@@ -56,7 +56,7 @@ class AdminDeleteController {
 				where: {},
 				cascade: true,
 			});
-			res.status(204).send({ msg: "Delete Peserta Berhasil" });
+			res.status(200).send({ msg: "Delete Peserta Berhasil" });
 		} catch (err) {
 			next(err);
 		}
