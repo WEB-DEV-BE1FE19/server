@@ -1,9 +1,9 @@
 const { Admin, Kelas, Materi, Peserta, Berita, Karya } = require("../models");
 const { checkPassword } = require("../helpers/cekUser");
-const { generateToken } = require("../middlewares/jwt")
+const { generateToken } = require("../middlewares/jwt");
 
 class AdminGetController {
-	static async adminLogin(req, res) {
+	static async adminLogin(req, res, next) {
 		try {
 			const data = req.body;
 			const admin = await Admin.findOne({ where: { username: data.username } });
@@ -11,79 +11,83 @@ class AdminGetController {
 				const checkPw = await checkPassword(data.password, admin.password);
 				if (checkPw) {
 					const getToken = await generateToken(
-                        {
-                            id: admin.id, 
-                            username: admin.username
-                        },process.env.SECRET_KEY);
-                    if (getToken) {
-                        res.status(200).json({token: getToken});
-                    } 				}
+						{
+							id: admin.id,
+							username: admin.username,
+						},
+						process.env.SECRET_KEY
+					);
+					if (getToken) {
+						res.status(202).json({ token: getToken });
+					}
+				} else {
+					const error = new Error('Username atau Password salah!'); 
+                	error.status(406);
+                	throw error
+				}
 			} else {
-				res.status(401).json({
-					message: "Username / Password Salah",
-				});
+				const error = new Error('Username atau Password salah!'); 
+                error.status(406);
+                throw error
 			}
-		} catch (error) {
-			res.status(500).json({
-				message: "internal server error",
-			});
-			console.log(error)
+		} catch (err) {
+			next(err);
 		}
 	}
 
-	static async peserta(req, res) {
+	static async peserta(req, res, next) {
 		try {
 			const datas = await Peserta.findAll();
 			res.status(200).send(datas);
-		} catch (error) {
-			res.status(500).send({ msg: "Internal Server Error" });
+		} catch (err) {
+			next(err);
 		}
 	}
 
-	static async kelas(req, res) {
+	static async kelas(req, res, next) {
 		try {
 			const datas = await Kelas.findAll();
 			res.status(200).send(datas);
-		} catch (error) {
-			res.status(500).send({ msg: "Internal Server Error" });
+		} catch (err) {
+			next(err);
 		}
 	}
 
-	static async karya(req, res) {
+	static async karya(req, res, next) {
 		try {
 			const datas = await Karya.findAll();
 			res.status(200).send(datas);
-		} catch (error) {
-			res.status(500).send({ msg: "Internal Server Error" });
+		} catch (err) {
+			next(err);
 		}
 	}
 
-	static async berita(req, res) {
+	static async berita(req, res, next) {
 		try {
 			const datas = await Berita.findAll();
 			res.status(200).send(datas);
-		} catch (error) {
-			res.status(500).send({ msg: "Internal Server Error" });
+		} catch (err) {
+			next(err);
 		}
 	}
 
-	static async materi(req, res) {
+	static async materi(req, res, next) {
 		try {
 			const dataKelas = req.params.kelasId;
-			const kelas = await Kelas.findOne({where:{id:dataKelas}})
-			const datas = await Materi.findAll({where:{kelas_id:kelas.id}});
+			const kelas = await Kelas.findOne({ where: { id: dataKelas } });
+			const datas = await Materi.findAll({ where: { kelas_id: kelas.id } });
 			res.status(200).send(datas);
-		} catch (error) {
-			res.status(500).send({ msg: "Internal Server Error" });
+		} catch (err) {
+			next(err);
 		}
 	}
 
-	static async materiAll(req, res) {
+	static async materiAll(req, res, next) {
 		try {
 			const datas = await Materi.findAll();
 			res.status(200).send(datas);
-		} catch (error) {
-			res.status(500).send({ msg: "Internal Server Error" });
+		} catch (err) {
+			next(err);
 		}
 	}
 }

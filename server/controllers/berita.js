@@ -3,10 +3,16 @@ const { Berita } = require('../models')
 class BeritaController {
     static async allNews(req, res) {
         try {
-            const datas = await Berita.findAll()   
-            res.status(200).send(datas)
-        } catch (error) {
-            throw new Error(error)
+            const datas = await Berita.findAll()
+            if (datas) {
+                res.status(200).send(datas)
+            } else {
+                const error = new Error('Data Tidak Ditemukan'); 
+                error.status(404);
+                throw error
+            }
+        } catch (err) {
+            next(err)
         }
     }
 
@@ -15,9 +21,10 @@ class BeritaController {
             const newsId = req.params.beritaId;
             const datas = await Berita.findOne({where:{id:newsId}})   
             res.status(200).send(datas)
-        } catch (error) {
-            throw new Error(error)
-        }
+        } catch {
+            const error = new Error("Berita Tidak Ditemukan");
+			error.status = 404;
+			next(error);        }
     }
 }
 
