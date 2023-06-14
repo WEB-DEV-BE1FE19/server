@@ -2,7 +2,7 @@ const {Kelas, Karya, Kelas_Peserta, Karya_Peserta } = require('../models')
 const { verifyToken } = require('../middlewares/jwt')
 
 class DashboardUser {
-    static async kelas(req,res) {
+    static async kelas(req, res, next) {
         try {
             const dataToken = await verifyToken(req.headers.token, process.env.SECRET_KEY)
 			const dataKelasPeserta = await Kelas_Peserta.findAll({where: {id_peserta: dataToken.id}})
@@ -13,8 +13,8 @@ class DashboardUser {
                 kelas_peserta: kelas
             }
             res.status(200).send(dashboard)
-		} catch {
-            res.status(500).send({msg: "Internal Server Error"})
+		} catch (err) {
+            next(err)
         }     
     }
 }

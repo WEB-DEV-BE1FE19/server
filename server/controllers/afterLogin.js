@@ -14,8 +14,8 @@ class AfterLogin {
             }
 			req.infoPeserta = infoPeserta
             next()
-		} catch {
-            res.status(500).send({msg: "Internal Server Error"})
+		} catch (err) {
+            next(err)
         }
 	}
 }

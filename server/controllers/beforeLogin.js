@@ -1,7 +1,7 @@
 const { Kelas, Berita, Karya } = require("../models");
 
 class GenerateHomePage {
-	static async generateHomePage(req, res) {
+	static async generateHomePage(req, res, next) {
 		try {
 			const infoPeserta = req.infoPeserta
 
@@ -17,9 +17,8 @@ class GenerateHomePage {
             	}
 				res.status(200).json(response);
 			}
-		} catch (error) {
-            console.log(error)
-			res.status(500).send({ msg: "Internal Server Error" });
+		} catch (err) {
+            next(err)
 		}
 	}
 }

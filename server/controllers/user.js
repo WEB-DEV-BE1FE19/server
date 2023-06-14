@@ -4,73 +4,90 @@ const { checkPassword } = require("../helpers/cekUser");
 const { generateToken, verifyToken } = require("../middlewares/jwt");
 const uploadToCloudinary = require("../helpers/cloudinary");
 class UserController {
-	static async userLogin(req, res) {
+	static async userLogin(req, res, next) {
 		try {
 			const dataLogin = req.body;
 			const isPeserta = await Peserta.findOne({ where: { email: dataLogin.email } });
-            
+
 			if (isPeserta) {
-                const cekPw = await checkPassword(dataLogin.password, isPeserta.password);
+				const cekPw = await checkPassword(dataLogin.password, isPeserta.password);
 				if (cekPw) {
-                    const getToken = await generateToken(
-                        {
-                            id: isPeserta.id, 
-                            email: isPeserta.email
-                        },process.env.SECRET_KEY);
-                    if (getToken) {
-                        res.status(200).json({token: getToken});
-                    } 
-                } else {
-					res.status(401).send({ msg: "Email Atau Password Salah!" });
+					const getToken = await generateToken(
+						{
+							id: isPeserta.id,
+							email: isPeserta.email,
+						},
+						process.env.SECRET_KEY
+					);
+					if (getToken) {
+						res.status(202).json({ token: getToken });
+					} else {
+						const error = new Error("Token tidak valid!");
+						error.status = 401;
+						next(error);
+					}
+				} else {
+					const error = new Error("Email atau Password salah!");
+					error.status = 406;
+					next(error);
 				}
 			} else {
-				res.status(401).send({ msg: "Email Atau Password Salah!" });
+				const error = new Error("Email atau Password salah!");
+				error.status = 406;
+				next(error);
 			}
-		} catch (error) {
-			res.status(500).send({ msg: "Internal Server Error" });
+		} catch (err) {
+			next(err)
 		}
 	}
 
-	static async userRegister(req, res) {
+	static async userRegister(req, res, next) {
 		try {
-            const gambarPortofolio = await uploadToCloudinary(req.files["portofolio"][0])
+			const gambarPortofolio = await uploadToCloudinary(req.files["portofolio"][0]);
 			const { nama_lengkap, email, password, asal_sekolah } = req.body;
 			const newPeserta = await Peserta.create({ nama_lengkap, email, password, asal_sekolah, portofolio: gambarPortofolio });
-			res.status(200).json({
-                msg: 'Berhasil Daftar',
-                data: newPeserta
-            })
-        } catch (error) {
-			console.log(error)
-            res.status(500).send({msg: "Internal Server Error"})
-        }
+			if (!newPeserta) {
+				const error = new Error("Harap Isi Data Dengan Benar!");
+				error.status = 406;
+				next(error);
+			} else {
+				res.status(201).json({
+					msg: "Berhasil Daftar",
+					data: newPeserta,
+				});
+			}
+		} catch (err) {
+			next(err);
+		}
 	}
 
-	static async userAddKelas(req,res) {
+	static async userAddKelas(req, res, next) {
 		try {
-			const dataToken = await verifyToken(req.headers.token, process.env.SECRET_KEY)
-			const peserta = await Peserta.findOne({where:{id: dataToken.id, email: dataToken.email}})
+			const dataToken = await verifyToken(req.headers.token, process.env.SECRET_KEY);
+			const peserta = await Peserta.findOne({ where: { id: dataToken.id, email: dataToken.email } });
 			if (peserta) {
-				const pesertaId = peserta.id
-				const kelasId = req.params.kelasId
-				const cek_kelas_peserta = await Kelas_Peserta.findOne({where: {id_peserta: pesertaId, id_kelas: kelasId}})
+				const pesertaId = peserta.id;
+				const kelasId = req.params.kelasId;
+				const cek_kelas_peserta = await Kelas_Peserta.findOne({ where: { id_peserta: pesertaId, id_kelas: kelasId } });
 				if (cek_kelas_peserta) {
-					res.status(400).send({msg: 'Kamu Sudah Bergabung Kelas Ini'})
+					const error = new Error("Kamu Sudah Bergabung Di Kelas Ini!");
+					error.status = 406;
+					next(error);
 				} else {
 					const kelas_peserta = await Kelas_Peserta.create({
 						id_peserta: pesertaId,
-						id_kelas: kelasId
-					})	
-					res.status(200).json({
-						msg: 'Berhasil tambah kelas',
-						data: kelas_peserta
-					})
+						id_kelas: kelasId,
+					});
+					res.status(202).json({
+						msg: "Berhasil tambah kelas",
+						data: kelas_peserta,
+					});
 				}
-			} else res.status(401).send({msg: 'unauthorized'})
-		} catch (error) {
-			res.status(500).send({msg: 'Internal Server Error'})
+			} else throw new Error('Kamu tidak memiliki akses')
+		} catch (err) {
+			next(err);
 		}
 	}
 }
 
-module.exports={UserController}
+module.exports = { UserController };

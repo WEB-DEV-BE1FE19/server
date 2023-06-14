@@ -7,15 +7,21 @@ const cekToken = async (req,res,next) => {
         const data = await verifyToken(req.headers.token, process.env.SECRET_KEY)
         req.params.pesertaId = data.id
         if (!data.email) {
-            res.status(401).send({msg: 'Invalid Token!'})
+            const error = new Error("Token tidak valid!");
+			error.status = 401;
+			next(error);
         } else {
             const dataPeserta = await Peserta.findOne({where: {id: data.id, email: data.email}})
             if (!dataPeserta) {
-                res.status(401).send({msg: 'Invalid Token!'})
+                const error = new Error("Token tidak valid!");
+				error.status = 401;
+				next(error);
             } else next()
         }
-    } catch (error) {
-        res.status(401).send({msg: 'Login Terlebih Dahulu!'})
+    } catch {
+        const error = new Error("Login Terlebih Dahulu!");
+		error.status = 401;
+		next(error);
     }
 }
 
@@ -23,15 +29,21 @@ const cekAdmin = async (req,res,next) => {
     try {
         const data = await verifyToken(req.headers.token, process.env.SECRET_KEY)
         if (!data.username) {
-            res.status(401).send({msg: "Invalid Token!"})
+            const error = new Error("Token tidak valid!");
+			error.status = 401;
+			next(error);
         } else {
             const dataAdmin = await Admin.findOne({where: {id: data.id, username: data.username}})
             if (!dataAdmin) {
-                res.status(401).send({msg: "Invalid Token"})
+                const error = new Error("Token tidak valid!");
+				error.status = 401;
+				next(error);    
             } else next()
         }
-    } catch (error) {
-        res.status(401).send({msg: "Silahkan Login Sebagai Admin!"})
+    } catch {
+        const error = new Error("Silahkan Login Sebagai Admin");
+		error.status = 401;
+		next(error);
     }
 }
 

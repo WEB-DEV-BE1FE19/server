@@ -1,23 +1,31 @@
 const { Karya } = require('../models')
 
 class KaryaController {
-    static async allArt(req, res) {
+    static async allArt(req, res, next) {
         try {
             const datas = await Karya.findAll()   
-            res.status(200).send(datas)
-        } catch (error) {
-            throw new Error(error)
+            if (datas) {
+                res.status(200).send(datas)
+            } else {
+                const error = new Error('Data Tidak Ditemukan'); 
+                error.status(404);
+                throw error
+            }
+        } catch (err) {
+            next(err)
         }
     }
 
-    static async artById(req, res) {
+    static async artById(req, res, next) {
         try {
             const artId = req.params.karyaId;
-            const datas = await Karya.findOne({where:{id:artId}})   
+            const datas = await Karya.findOne({where:{id:artId}})
             res.status(200).send(datas)
-        } catch (error) {
-            throw new Error(error)
-        }
+        } catch {
+			const error = new Error("Karya Tidak Ditemukan");
+			error.status = 404;
+			next(error);
+		}
     }
 }
 
