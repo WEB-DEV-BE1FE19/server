@@ -43,9 +43,8 @@ class UserController {
 
 	static async userRegister(req, res, next) {
 		try {
-			const gambarPortofolio = await uploadToCloudinary(req.files["portofolio"][0]);
-			const { nama_lengkap, email, password, asal_sekolah } = req.body;
-			const newPeserta = await Peserta.create({ nama_lengkap, email, password, asal_sekolah, portofolio: gambarPortofolio });
+			const { nama_lengkap, email, password } = req.body;
+			const newPeserta = await Peserta.create({ nama_lengkap, email, password });
 			if (!newPeserta) {
 				const error = new Error("Harap Isi Data Dengan Benar!");
 				error.status = 406;

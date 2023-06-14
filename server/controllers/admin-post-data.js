@@ -8,13 +8,10 @@ class AdminPostController {
 			if (peserta) {
 				next(new Error("Email Peserta Sudah Terdaftar!").status(406));
 			} else {
-				const portofolio = await uploadToCloudinary(req.files["portofolio"][0]);
 				const newPeserta = await Peserta.create({
 					nama_lengkap: data.nama_lengkap,
 					email: data.email,
-					password: data.password,
-					asal_sekolah: data.asal_sekolah,
-					portofolio: portofolio,
+					password: data.password
 				});
 				res.status(201).send(newPeserta);
 			}
