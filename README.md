@@ -1,1 +1,39 @@
-# remedial
+# Link End-Point
+
+### https://documenter.getpostman.com/view/14756847/2s93sgWAhd
+
+- - -
+
+# Library Packages
+
+> **dev-dependencies**
+
+* bcrypt
+* body-parser
+* cloudinary
+* cors
+* dotenv
+* express
+* jsonwebtoken
+* multer
+* nodemailer
+* nodemon
+
+> **dependencies**
+
+* mysql
+* mysql2
+* sequelize
+
+# How To Run Apps
+
+After you forking or clone this repository, please follow these steps :
+
+* Open folder and terminal then run :
+**folder: remedial/server**
+**\> npm install**
+**\> npm start**
+( now the apps is running on **localhost:3030 )**
+
+<br>
+* Open it in a browser or postman and enter [**localhost:3030/**](localhost:3030) for testing the apps
