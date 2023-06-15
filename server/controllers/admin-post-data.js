@@ -1,4 +1,4 @@
-const { Kelas, Materi, Peserta, Berita, Karya } = require("../models");
+const { Kelas, Materi, Peserta, Berita, Karya, Karya_Peserta } = require("../models");
 const uploadToCloudinary = require("../helpers/cloudinary");
 class AdminPostController {
 	static async peserta(req, res, next) {
@@ -46,6 +46,7 @@ class AdminPostController {
 		try {
 			const data = req.body;
 			const karya = await Karya.findOne({ where: { judul_karya: data.judul_karya } });
+			const peserta = await Peserta.findOne({ where: {id: data.peserta_id} })
 			if (karya) {
 				next(new Error("Karya Sudah Ada!").status(406));
 			} else {
@@ -56,7 +57,11 @@ class AdminPostController {
 					gambar_karya: gambarKarya,
 					peserta_id: data.peserta_id,
 				});
-				res.status(201).send(newKarya);
+				if (newKarya) await Karya_Peserta.create({peserta_id: data.peserta_id,karya_id: newKarya.id})
+				res.status(201).send({
+					karya: newKarya,
+					nama_peserta: peserta.nama_lengkap
+				});
 			}
 		} catch (err) {
 			next(new Error(err).status(500));
@@ -89,11 +94,12 @@ class AdminPostController {
 			const dataKelas = req.params.kelasId;
 			const data = req.body;
 			const kelas = await Kelas.findOne({ where: { id: dataKelas } });
-
+			const videoMateri = await uploadToCloudinary(req.files["video_materi"][0]);
 			const newMateri = await Materi.create({
 				judul_materi: data.judul_materi,
 				deskripsi_materi: data.deskripsi_materi,
-				kelas_id: kelas.id,
+				video_materi: videoMateri,
+				kelas_id: kelas.id
 			});
 			res.status(201).send(newMateri);
 		} catch (err) {

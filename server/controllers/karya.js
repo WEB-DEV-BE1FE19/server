@@ -1,4 +1,4 @@
-const { Karya } = require('../models')
+const { Karya, Peserta } = require('../models')
 
 class KaryaController {
     static async allArt(req, res, next) {
@@ -19,6 +19,7 @@ class KaryaController {
     static async artById(req, res, next) {
         try {
             const artId = req.params.karyaId;
+            const peserta = await Peserta
             const datas = await Karya.findOne({where:{id:artId}})
             if (datas) {
                 res.status(200).send(datas)
