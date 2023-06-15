@@ -1,5 +1,5 @@
 require("dotenv").config();
-const { Peserta, Kelas, Kelas_Peserta, Karya, Karya_Peserta } = require("../models");
+const { Peserta, Kelas, Kelas_Peserta, Materi } = require("../models");
 const { checkPassword } = require("../helpers/cekUser");
 const { generateToken, verifyToken } = require("../middlewares/jwt");
 const uploadToCloudinary = require("../helpers/cloudinary");
@@ -20,7 +20,11 @@ class UserController {
 						process.env.SECRET_KEY
 					);
 					if (getToken) {
-						res.status(202).json({ nama_lengkap: isPeserta.nama_lengkap, enail: isPeserta.email, token: getToken });
+						res.status(202).json({ 
+							message: 'Berhasil Login',
+							nama_lengkap: isPeserta.nama_lengkap, 
+							email: isPeserta.email, 
+							token: getToken });
 					} else {
 						const error = new Error("Token tidak valid!");
 						error.status = 401;
@@ -85,6 +89,32 @@ class UserController {
 			} else throw new Error('Kamu tidak memiliki akses')
 		} catch (err) {
 			next(err);
+		}
+	}
+
+	static async userGetMateri(req, res, next) {
+		try {
+			const dataToken = await verifyToken(req.headers.token, process.env.SECRET_KEY);
+			const peserta = await Peserta.findOne({ where: { id: dataToken.id, email: dataToken.email } });
+			if (peserta) {
+				const pesertaId = peserta.id;
+				const kelasId = req.params.kelasId;
+				const cek_kelas_peserta = await Kelas_Peserta.findOne({ where: { id_peserta: pesertaId, id_kelas: kelasId } });
+				if (!cek_kelas_peserta) {
+					const error = new Error("Kamu Belum Bergabung Di Kelas Ini!");
+					error.status = 406;
+					next(error);
+				} else {
+					const kelas = await Kelas.findOne({where: {id: kelasId}})
+					const materi = await Materi.findAll({where: {kelas_id: kelas.id}})
+					res.status(200).json({
+						kelas: kelas,
+						materi: materi
+					})
+				}
+			} else throw new Error('Kamu tidak memiliki akses')
+		} catch (err) {
+			next(err)
 		}
 	}
 }

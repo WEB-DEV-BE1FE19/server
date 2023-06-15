@@ -115,10 +115,12 @@ class AdminUpdateController {
 			const { judul_materi, deskripsi_materi } = req.body;
 			const materi = await Materi.findOne({ where: { id: dataMateri, kelas_id: kelas.id } });
 			if (materi) {
+				const videoMateri = await uploadToCloudinary(req.files["video_materi"][0]);
 				await Materi.update(
 					{
 						judul_materi,
 						deskripsi_materi,
+						video_materi: videoMateri
 					},
 					{ where: { id: dataMateri }, cascade: true }
 				);
