@@ -18,7 +18,7 @@ module.exports = (sequelize, DataTypes) => {
     nama_kelas: DataTypes.STRING,
     kategori_kelas: DataTypes.STRING,
     mentor_kelas: DataTypes.STRING,
-    deskripsi_kelas: DataTypes.STRING,
+    deskripsi_kelas: DataTypes.TEXT,
     gambar_kelas: DataTypes.STRING
   }, {
     sequelize,

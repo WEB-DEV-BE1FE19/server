@@ -94,15 +94,15 @@ class AdminPostController {
 			const dataKelas = req.params.kelasId;
 			const data = req.body;
 			const kelas = await Kelas.findOne({ where: { id: dataKelas } });
-			const videoMateri = await uploadToCloudinary(req.files["video_materi"][0]);
 			const newMateri = await Materi.create({
 				judul_materi: data.judul_materi,
 				deskripsi_materi: data.deskripsi_materi,
-				video_materi: videoMateri,
+				video_materi: data.video_materi,
 				kelas_id: kelas.id
 			});
 			res.status(201).send(newMateri);
 		} catch (err) {
+			console.log(err)
 			next(new Error(err).status(500));
 		}
 	}

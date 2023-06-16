@@ -55,7 +55,7 @@ class UserController {
 				next(error);
 			} else {
 				res.status(201).json({
-					msg: "Berhasil Daftar",
+					message: "Berhasil Daftar",
 					data: newPeserta,
 				});
 			}
@@ -82,7 +82,7 @@ class UserController {
 						id_kelas: kelasId,
 					});
 					res.status(202).json({
-						msg: "Berhasil tambah kelas",
+						message: "Berhasil tambah kelas",
 						data: kelas_peserta,
 					});
 				}
