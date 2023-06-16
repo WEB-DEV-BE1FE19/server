@@ -15,7 +15,7 @@ module.exports = (sequelize, DataTypes) => {
   }
   Materi.init({
     judul_materi: DataTypes.STRING,
-    deskripsi_materi: DataTypes.STRING,
+    deskripsi_materi: DataTypes.TEXT,
     video_materi: DataTypes.STRING,
     kelas_id: DataTypes.INTEGER
   }, {
