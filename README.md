@@ -30,10 +30,7 @@
 After you forking or clone this repository, please follow these steps :
 
 * Open folder and terminal then run :
-**folder: remedial/server**
 **\> npm install**
 **\> npm start**
 ( now the apps is running on **localhost:3030 )**
-
-<br>
 * Open it in a browser or postman and enter [**localhost:3030/**](localhost:3030) for testing the apps
