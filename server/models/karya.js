@@ -15,7 +15,7 @@ module.exports = (sequelize, DataTypes) => {
   }
   Karya.init({
     judul_karya: DataTypes.STRING,
-    deskripsi_karya: DataTypes.STRING,
+    deskripsi_karya: DataTypes.TEXT,
     gambar_karya: DataTypes.STRING,
     peserta_id: DataTypes.INTEGER
   }, {

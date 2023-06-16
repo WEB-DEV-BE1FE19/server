@@ -6,7 +6,9 @@ class AdminPostController {
 			const data = req.body;
 			const peserta = await Peserta.findOne({ where: { email: data.email } });
 			if (peserta) {
-				next(new Error("Email Peserta Sudah Terdaftar!").status(406));
+				const error = new Error('Email Peserta Sudah Terdaftar!'); 
+                	error.status(406);
+                	throw error
 			} else {
 				const newPeserta = await Peserta.create({
 					nama_lengkap: data.nama_lengkap,
@@ -16,7 +18,7 @@ class AdminPostController {
 				res.status(201).send(newPeserta);
 			}
 		} catch (err) {
-			next(new Error(err).status(500));
+			next(err)
 		}
 	}
 
@@ -25,7 +27,9 @@ class AdminPostController {
 			const data = req.body;
 			const kelas = await Kelas.findOne({ where: { nama_kelas: data.nama_kelas } });
 			if (kelas) {
-				next(new Error("Kelas Sudah Ada!").status(406));
+				const error = new Error('Kelas Sudah Ada!'); 
+                	error.status(406);
+                	throw error
 			} else {
 				const gambarKelas = await uploadToCloudinary(req.files["gambar_kelas"][0]);
 				const newKelas = await Kelas.create({
@@ -38,7 +42,7 @@ class AdminPostController {
 				res.status(201).send(newKelas);
 			}
 		} catch (err) {
-			next(new Error(err).status(500));
+			next(err)
 		}
 	}
 
@@ -48,7 +52,9 @@ class AdminPostController {
 			const karya = await Karya.findOne({ where: { judul_karya: data.judul_karya } });
 			const peserta = await Peserta.findOne({ where: {id: data.peserta_id} })
 			if (karya) {
-				next(new Error("Karya Sudah Ada!").status(406));
+				const error = new Error('Karya Sudah Ada!'); 
+                	error.status(406);
+                	throw error
 			} else {
 				const gambarKarya = await uploadToCloudinary(req.files["gambar_karya"][0]);
 				const newKarya = await Karya.create({
@@ -64,7 +70,8 @@ class AdminPostController {
 				});
 			}
 		} catch (err) {
-			next(new Error(err).status(500));
+			console.log(err)
+			next(err)
 		}
 	}
 
@@ -73,7 +80,9 @@ class AdminPostController {
 			const data = req.body;
 			const berita = await Berita.findOne({ where: { judul_berita: data.judul_berita } });
 			if (berita) {
-				next(new Error("Berita Sudah Ada!").status(406));
+				const error = new Error('Berita Sudah Ada!'); 
+                	error.status(406);
+                	throw error
 			} else {
 				const gambarBerita = await uploadToCloudinary(req.files["gambar_berita"][0]);
 				const newBerita = await Berita.create({
@@ -85,7 +94,7 @@ class AdminPostController {
 				res.status(201).send(newBerita);
 			}
 		} catch (err) {
-			next(new Error(err).status(500));
+			next(err)
 		}
 	}
 
@@ -102,8 +111,7 @@ class AdminPostController {
 			});
 			res.status(201).send(newMateri);
 		} catch (err) {
-			console.log(err)
-			next(new Error(err).status(500));
+			next(err)
 		}
 	}
 }
